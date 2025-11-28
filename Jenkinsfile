@@ -4,14 +4,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/ankandhang/test-case1.git'
+                git branch: 'main', url: 'https://github.com/ankandhang/test-case1.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t devops-static-site .'
+                    bat 'docker build -t devops-static-site .'
                 }
             }
         }
@@ -19,9 +19,9 @@ pipeline {
         stage('Run Container') {
             steps {
                 script {
-                    sh 'docker stop static-site || true'
-                    sh 'docker rm static-site || true'
-                    sh 'docker run -d -p 5000:80 --name static-site devops-static-site'
+                    bat 'docker stop static-site || exit 0'
+                    bat 'docker rm static-site || exit 0'
+                    bat 'docker run -d -p 5000:80 --name static-site devops-static-site'
                 }
             }
         }
